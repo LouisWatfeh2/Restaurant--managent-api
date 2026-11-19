@@ -1,0 +1,22 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+      MONGODB_URI: mongodb://mongodb:27017/restaurant_db
+      JWT_SECRET: demo-secret-key
+      JWT_EXPIRE: 7d
+    depends_on:
+      - mongodb
+    restart: on-failure
+
+volumes:
+  mongo_data:
